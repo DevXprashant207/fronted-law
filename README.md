@@ -1,6 +1,6 @@
 # React + Vite
-#// 89b69b5f53419f513d9e9c7666bcdd36  - access id
-#// 5e5c9cd7250c8d266a14a23ed703bd502de453e389cfeadc472c152bf2c3f062 -> secret access key
+
+#// 5e5c9cd7250c8d266a14a23ed703bd502de453e389cfeadc472c152bf2c3f062-89b69b5f53419f513d9e9c7666bcdd36  -> secret access key
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
