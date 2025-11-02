@@ -5,6 +5,7 @@ import MediaModule from './MediaModule';
 import NewsModule from './NewsModule';
 import PostsModule from './PostsModule';
 import ServicesModule from './ServicesModule';
+import SubAdminModule from './SubAdminModule';
 import { useNavigate } from 'react-router-dom';
 
 function AdminDashboard() {
@@ -19,24 +20,31 @@ function AdminDashboard() {
     enquiries: 0
   });
 
+  // 👇 Updated settings with 4 toggles
+  const [settings, setSettings] = useState({
+    showNews: true,
+    showTeam: true,
+    showServices: true,
+    showBlog: true
+  });
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) navigate('/admin/login');
 
     const fetchCounts = async () => {
       try {
-        const token = localStorage.getItem('token'); // your saved token
+        const token = localStorage.getItem('token');
 
-        const [newsRes, lawyersRes, postsRes, servicesRes, enquiriesRes] = await Promise.all([
+        const [newsRes, lawyersRes, postsRes, servicesRes, enquiriesRes, settingsRes] = await Promise.all([
           fetch('https://law-firm-backend-e082.onrender.com/api/news/').then(res => res.json()),
           fetch('https://law-firm-backend-e082.onrender.com/api/lawyers').then(res => res.json()),
           fetch('https://law-firm-backend-e082.onrender.com/api/posts/').then(res => res.json()),
           fetch('https://law-firm-backend-e082.onrender.com/api/services/').then(res => res.json()),
           fetch('https://law-firm-backend-e082.onrender.com/api/admin/enquiries?limit=1000', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          }).then(res => res.json())
+            headers: { 'Authorization': `Bearer ${token}` }
+          }).then(res => res.json()),
+          fetch('https://law-firm-backend-e082.onrender.com/api/settings').then(res => res.json())
         ]);
 
         setCounts({
@@ -47,14 +55,34 @@ function AdminDashboard() {
           enquiries: Array.isArray(enquiriesRes.data) ? enquiriesRes.data.length : 0
         });
 
+        if (settingsRes) setSettings(settingsRes);
       } catch (error) {
-        console.error('Failed to fetch counts:', error);
+        console.error('Failed to fetch counts or settings:', error);
       }
     };
 
-
     fetchCounts();
   }, [navigate]);
+
+  // 👇 Update setting to backend
+  const updateSetting = async (field, value) => {
+    try {
+      const newSettings = { ...settings, [field]: value };
+      setSettings(newSettings);
+
+      const token = localStorage.getItem('token');
+      await fetch('http://localhost:3000/api/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newSettings)
+      });
+    } catch (error) {
+      console.error('Error updating settings:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f8f6f2] font-serif flex">
@@ -70,17 +98,20 @@ function AdminDashboard() {
         </div>
 
         <nav className="flex flex-col gap-4">
-          {['dashboard', 'enquiries', 'lawyers', 'services', 'posts', 'news'].map((section) => (
+          {['dashboard', 'enquiries', 'lawyers', 'services', 'posts', 'news', 'subadmins', 'settings'].map((section) => (
             <button
               key={section}
-              className={`text-left px-4 py-2 rounded transition ${activeSection === section
+              className={`text-left px-4 py-2 rounded transition ${
+                activeSection === section
                   ? 'bg-[#cfac33] text-white shadow-md'
                   : 'hover:bg-[#cfac33] hover:text-white'
-                }`}
+              }`}
               onClick={() => setActiveSection(section)}
             >
               {section === 'posts'
                 ? 'Blogs & Articles'
+                : section === 'subadmins'
+                ? 'Sub Admins'
                 : section.charAt(0).toUpperCase() + section.slice(1)}
             </button>
           ))}
@@ -99,9 +130,11 @@ function AdminDashboard() {
 
       {/* Main Content */}
       <main className="flex-1 p-10 bg-gradient-to-b from-[#ffffff] to-[#ffffff] shadow-inner rounded-tl-3xl transition-all">
-        <h1 className="text-3xl font-bold text-[#23293a] mb-8 border-b pb-2">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold text-[#23293a] mb-8 border-b pb-2">
+          {activeSection === 'settings' ? 'Site Settings' : 'Admin Dashboard'}
+        </h1>
 
-        {/* Dashboard Overview with Quick Links */}
+        {/* Dashboard Overview */}
         {activeSection === 'dashboard' && (
           <div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -110,7 +143,7 @@ function AdminDashboard() {
                 { label: 'Lawyers', value: counts.lawyers, key: 'lawyers' },
                 { label: 'Posts', value: counts.posts, key: 'posts' },
                 { label: 'Services', value: counts.services, key: 'services' },
-                { label: 'Enquiries', value: counts.enquiries, key: 'enquiries' } // Added Enquiries
+                { label: 'Enquiries', value: counts.enquiries, key: 'enquiries' }
               ].map(({ label, value, key }) => (
                 <div
                   key={key}
@@ -132,6 +165,32 @@ function AdminDashboard() {
         {activeSection === 'posts' && <PostsModule />}
         {activeSection === 'services' && <ServicesModule />}
         {activeSection === 'news' && <NewsModule />}
+        {activeSection === 'subadmins' && <SubAdminModule />}
+
+        {/* Settings Section */}
+        {activeSection === 'settings' && (
+          <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-lg">
+            <h2 className="text-2xl font-bold mb-6 text-[#23293a]">Homepage Visibility</h2>
+            <div className="flex flex-col gap-6">
+              {[
+                { field: 'showTeam', label: 'Show Team Section' },
+                { field: 'showNews', label: 'Show News Section' },
+                { field: 'showServices', label: 'Show Services Section' },
+                { field: 'showBlog', label: 'Show Blog Section' }
+              ].map(({ field, label }) => (
+                <div key={field} className="flex items-center justify-between">
+                  <span className="font-medium text-lg text-gray-800">{label}</span>
+                  <input
+                    type="checkbox"
+                    checked={settings[field]}
+                    onChange={(e) => updateSetting(field, e.target.checked)}
+                    className="w-6 h-6 cursor-pointer accent-[#cfac33]"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

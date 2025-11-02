@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -23,18 +23,44 @@ import AdminNews from "./pages/AdminNews";
 import AdminEnquiries from "./pages/AdminEnquiries";
 import DisclaimerModal from "./components/DisclaimerModal";
 import "./App.css";
+import About from "./pages/AboutUs";
 
 function App() {
   const [hasAgreed, setHasAgreed] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(false);
 
+  // Site settings from backend
+  const [settings, setSettings] = useState({
+    showTeam: true,
+    showNews: true,
+    showServices: true,
+    showBlog: true,
+  });
+
   useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/settings");
+        if (!res.ok) throw new Error("Failed to fetch settings");
+        const data = await res.json();
+
+        // Map backend response safely
+        setSettings({
+          showTeam: data?.showTeam ?? true,
+          showNews: data?.showNews ?? true,
+          showServices: data?.showServices ?? true,
+          showBlog: data?.showBlog ?? true,
+        });
+      } catch (err) {
+        console.error("Error fetching settings:", err);
+      }
+    };
+
+    fetchSettings();
+
     const agreed = localStorage.getItem("disclaimerAgreed");
-    if (agreed === "true") {
-      setHasAgreed(true);
-    } else {
-      setShowDisclaimer(true);
-    }
+    if (agreed === "true") setHasAgreed(true);
+    else setShowDisclaimer(true);
   }, []);
 
   const handleAgree = () => {
@@ -44,7 +70,7 @@ function App() {
   };
 
   return (
-    <div>
+    <>
       <div
         className={`min-h-screen bg-white font-serif flex flex-col relative transition-all duration-500 ${
           showDisclaimer ? "blur-sm scale-[0.99]" : ""
@@ -54,31 +80,38 @@ function App() {
 
         <div className="flex-1">
           <Routes>
+            {/* ✅ Home Page */}
             <Route
               path="/"
               element={
                 <>
                   <HeroSection />
                   <HomeAboutUs />
-                  <HomeServices />
-                  <HomeLawyerTeam />
+
+                  {settings.showServices && <HomeServices />}
+                  {settings.showTeam && <HomeLawyerTeam />}
                   <HomeStats />
                   <HomeTestimonials />
-                  <HomeCaseStudies />
-                  {/* 👇 Show Enquiry only if user agreed */}
+                  {settings.showNews && <HomeCaseStudies />}
                   {hasAgreed && <ConsultationForm />}
                 </>
               }
             />
+
+            {/* 🔹 Other pages */}
             <Route path="/consultation" element={<ConsultationForm />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/:id" element={<ServiceDetails />} />
             <Route path="/lawyers" element={<Lawyers />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:id" element={<NewsDetail />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<About />} />
+
+
+            {/* 🔹 Admin routes (optional here, for consistency) */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/news" element={<AdminNews />} />
             <Route path="/admin/enquiries" element={<AdminEnquiries />} />
@@ -88,13 +121,12 @@ function App() {
         <Footer />
       </div>
 
-      {/* 👇 Show Disclaimer Modal on top */}
       {showDisclaimer && (
         <div className="absolute inset-0 z-50 flex items-center justify-center">
           <DisclaimerModal onAgree={handleAgree} />
         </div>
       )}
-    </div>
+    </>
   );
 }
 
