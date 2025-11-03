@@ -107,21 +107,7 @@ function Navbar() {
             <Link to="/lawyers" className={navLinkClasses} onClick={() => setOpen(false)}>Lawyers</Link>
             <Link to="/blog" className={navLinkClasses} onClick={() => setOpen(false)}>Blog</Link>
             <Link to="/news" className={navLinkClasses} onClick={() => setOpen(false)}>News/Articles</Link>
-            <a
-              href="#about-us"
-              className={navLinkClasses}
-              onClick={(e) => {
-                e.preventDefault()
-                if (window.location.pathname !== "/") {
-                  window.location.href = "/#about-us"
-                } else {
-                  document.getElementById("about-us")?.scrollIntoView({ behavior: "smooth" })
-                }
-                setOpen(false)
-              }}
-            >
-              About us
-            </a>
+            <Link to="/about"className={navLinkClasses} onClick={() => setOpen(false)}>About Us</Link>
             <Link
               to="/admin/login"
               className="bg-[#B88A2F] text-white px-4 py-1 rounded font-semibold"

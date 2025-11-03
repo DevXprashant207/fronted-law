@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { FiUserPlus, FiTrash2 } from "react-icons/fi";
+import { FiUserPlus, FiTrash2, FiEdit } from "react-icons/fi";
 
-const API_BASE = "https://law-firm-backend-e082.onrender.com"; // ✅ Update to your deployed backend
+const API_BASE = "https://law-firm-backend-e082.onrender.com";
 
-function SubAdminForm({ onSubmit, onCancel }) {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    canManageEnquiries: false,
-    canManageLawyers: false,
-    canManageServices: false,
-    canManagePosts: false,
-    canManageNews: false,
-    canManageSettings: false,
-  });
+function SubAdminForm({ onSubmit, onCancel, existingData }) {
+  const [form, setForm] = useState(
+    existingData || {
+      name: "",
+      email: "",
+      password: "",
+      canManageEnquiries: false,
+      canManageLawyers: false,
+      canManageServices: false,
+      canManagePosts: false,
+      canManageNews: false,
+      canManageSettings: false,
+    }
+  );
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -24,8 +26,8 @@ function SubAdminForm({ onSubmit, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.email || !form.password || !form.name) {
-      setError("All fields are required.");
+    if (!form.email || !form.name) {
+      setError("Name and Email are required.");
       return;
     }
     setError("");
@@ -52,16 +54,20 @@ function SubAdminForm({ onSubmit, onCancel }) {
         onChange={handleChange}
         placeholder="Email"
         className="w-full border p-2 rounded"
+        disabled={!!existingData} // Disable email edit
       />
 
-      <input
-        type="password"
-        name="password"
-        value={form.password}
-        onChange={handleChange}
-        placeholder="Password"
-        className="w-full border p-2 rounded"
-      />
+      {!existingData && (
+        <input
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Password"
+          className="w-full border p-2 rounded"
+          required
+        />
+      )}
 
       <div className="grid grid-cols-2 gap-2 border p-3 rounded bg-gray-50">
         {[
@@ -97,7 +103,7 @@ function SubAdminForm({ onSubmit, onCancel }) {
           type="submit"
           className="bg-[#cfac33] text-white px-4 py-2 rounded hover:bg-[#b8932b]"
         >
-          Create
+          {existingData ? "Update" : "Create"}
         </button>
       </div>
     </form>
@@ -107,8 +113,12 @@ function SubAdminForm({ onSubmit, onCancel }) {
 function SubAdminModule() {
   const [subAdmins, setSubAdmins] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editData, setEditData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("token");
+
+  // ✅ Use correct token from login page
+  const token =
+    localStorage.getItem("adminToken") || localStorage.getItem("subAdminToken");
 
   const fetchSubAdmins = async () => {
     setLoading(true);
@@ -129,28 +139,41 @@ function SubAdminModule() {
     fetchSubAdmins();
   }, []);
 
-  const handleCreate = async (formData) => {
+  // ✅ Create or Update
+  const handleSubmit = async (formData) => {
     try {
-      const res = await fetch(`${API_BASE}/api/subadmin/create`, {
-        method: "POST",
+      const endpoint = editData
+        ? `${API_BASE}/api/subadmin/${editData.id}`
+        : `${API_BASE}/api/subadmin/create`;
+
+      const method = editData ? "PUT" : "POST";
+
+      const res = await fetch(endpoint, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ ...formData, createdBy: "admin-id" }), // replace with dynamic adminId if available
+        body: JSON.stringify(formData),
       });
+
       const data = await res.json();
+
       if (data.success) {
         setShowForm(false);
+        setEditData(null);
         fetchSubAdmins();
+      } else {
+        console.error("Error:", data.error);
       }
     } catch (err) {
-      console.error("Create subadmin error:", err);
+      console.error("Save error:", err);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this SubAdmin?")) return;
+    if (!window.confirm("Are you sure you want to delete this SubAdmin?"))
+      return;
     try {
       await fetch(`${API_BASE}/api/subadmin/${id}`, {
         method: "DELETE",
@@ -162,6 +185,11 @@ function SubAdminModule() {
     }
   };
 
+  const handleEdit = (subAdmin) => {
+    setEditData(subAdmin);
+    setShowForm(true);
+  };
+
   return (
     <div className="p-8 bg-white rounded-2xl shadow-lg">
       <div className="flex justify-between items-center mb-6">
@@ -169,7 +197,10 @@ function SubAdminModule() {
           SubAdmin Management
         </h2>
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+            setEditData(null);
+            setShowForm(true);
+          }}
           className="bg-[#cfac33] text-white px-5 py-2 rounded hover:bg-[#b8932b] flex items-center gap-2"
         >
           <FiUserPlus /> Add SubAdmin
@@ -180,17 +211,24 @@ function SubAdminModule() {
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-lg relative">
             <button
-              onClick={() => setShowForm(false)}
+              onClick={() => {
+                setShowForm(false);
+                setEditData(null);
+              }}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold"
             >
               &times;
             </button>
             <h3 className="text-xl font-semibold text-[#23293a] mb-4 text-center">
-              Create New SubAdmin
+              {editData ? "Edit SubAdmin" : "Create New SubAdmin"}
             </h3>
             <SubAdminForm
-              onSubmit={handleCreate}
-              onCancel={() => setShowForm(false)}
+              onSubmit={handleSubmit}
+              onCancel={() => {
+                setShowForm(false);
+                setEditData(null);
+              }}
+              existingData={editData}
             />
           </div>
         </div>
@@ -213,7 +251,9 @@ function SubAdminModule() {
               {subAdmins.map((s, i) => (
                 <tr
                   key={s.id}
-                  className={`${i % 2 === 0 ? "bg-white" : "bg-[#f8f6f2]"} hover:bg-[#ede9dd]`}
+                  className={`${
+                    i % 2 === 0 ? "bg-white" : "bg-[#f8f6f2]"
+                  } hover:bg-[#ede9dd]`}
                 >
                   <td className="p-3">{s.name}</td>
                   <td className="p-3">{s.email}</td>
@@ -223,10 +263,16 @@ function SubAdminModule() {
                       .map(([k]) => k.replace("canManage", ""))
                       .join(", ") || "No Permissions"}
                   </td>
-                  <td className="p-3 text-center">
+                  <td className="p-3 text-center flex justify-center gap-3">
+                    <button
+                      onClick={() => handleEdit(s)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 flex items-center gap-1"
+                    >
+                      <FiEdit /> Edit
+                    </button>
                     <button
                       onClick={() => handleDelete(s.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 flex items-center gap-1 mx-auto"
+                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 flex items-center gap-1"
                     >
                       <FiTrash2 /> Delete
                     </button>

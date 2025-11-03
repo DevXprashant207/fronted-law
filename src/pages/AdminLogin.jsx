@@ -6,7 +6,7 @@ function AdminLogin() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [loginType, setLoginType] = useState("subadmin"); // 👈 Default: Sub Admin
+  const [loginType, setLoginType] = useState("subadmin"); // Default: Sub Admin
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -29,7 +29,7 @@ function AdminLogin() {
       const endpoint =
         loginType === "admin"
           ? "https://law-firm-backend-e082.onrender.com/api/admin/auth/login"
-          : "https://law-firm-backend-e082.onrender.com/api/subadmin/auth/login";
+          : "https://law-firm-backend-e082.onrender.com/api/subadmin/login";
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -45,21 +45,35 @@ function AdminLogin() {
         return;
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem(
-        "admin",
-        JSON.stringify({ name: data.name, role: data.role })
-      );
+      // ✅ Store token based on role
+      if (loginType === "admin") {
+        localStorage.setItem("adminToken", data.token);
+        localStorage.setItem(
+          "admin",
+          JSON.stringify({ name: data.name || "Admin", role: "admin" })
+        );
+      } else {
+        localStorage.setItem("subAdminToken", data.token);
+        localStorage.setItem(
+          "subAdmin",
+          JSON.stringify({ name: data.name || "SubAdmin", role: "subadmin" })
+        );
+      }
+      console.log("Login type:", loginType);
+      console.log("Token:", data.token);
 
-      setTimeout(() => {
+     if (loginType === "admin") {
         navigate("/admin");
-      }, 200);
+      } else if (loginType === "subadmin") {
+        navigate("/subadmin/dashboard");
+      }
+
+
     } catch (err) {
       setError("Network error. Please try again.");
+    } finally {
       setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (

@@ -24,6 +24,8 @@ import AdminEnquiries from "./pages/AdminEnquiries";
 import DisclaimerModal from "./components/DisclaimerModal";
 import "./App.css";
 import About from "./pages/AboutUs";
+import SubAdminDashboard from "./pages/SubAdminDashboard";
+
 
 function App() {
   const [hasAgreed, setHasAgreed] = useState(false);
@@ -40,7 +42,7 @@ function App() {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/settings");
+        const res = await fetch("https://law-firm-backend-e082.onrender.com/api/settings");
         if (!res.ok) throw new Error("Failed to fetch settings");
         const data = await res.json();
 
@@ -115,6 +117,7 @@ function App() {
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/news" element={<AdminNews />} />
             <Route path="/admin/enquiries" element={<AdminEnquiries />} />
+            <Route path="/subadmin/dashboard" element={<SubAdminDashboard />} />
           </Routes>
         </div>
 

@@ -71,7 +71,7 @@ function AdminDashboard() {
       setSettings(newSettings);
 
       const token = localStorage.getItem('token');
-      await fetch('http://localhost:3000/api/settings', {
+      await fetch('https://law-firm-backend-e082.onrender.com/api/settings', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
