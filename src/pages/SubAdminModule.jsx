@@ -118,7 +118,7 @@ function SubAdminModule() {
 
   // ✅ Use correct token from login page
   const token =
-    localStorage.getItem("adminToken") || localStorage.getItem("subAdminToken");
+     localStorage.getItem("adminToken");
 
   const fetchSubAdmins = async () => {
     setLoading(true);

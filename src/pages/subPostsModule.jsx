@@ -118,7 +118,7 @@ function PostsModule() {
   const [editing, setEditing] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const token = localStorage.getItem('adminToken');
+  const token = localStorage.getItem("subAdminToken");
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -138,7 +138,7 @@ function PostsModule() {
 
   const handleCreate = async (formData) => {
     try {
-      const res = await fetch(`${API_BASE}/api/admin/posts`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/posts`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -154,7 +154,7 @@ function PostsModule() {
   const handleUpdate = async (formData) => {
     if (!editing?.id) return;
     try {
-      const res = await fetch(`${API_BASE}/api/admin/posts/${editing.id}`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/posts/${editing.id}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -170,7 +170,7 @@ function PostsModule() {
   const handleDelete = async (id) => {
     if (!id || !window.confirm('Are you sure you want to delete this post?')) return;
     try {
-      const res = await fetch(`${API_BASE}/api/admin/posts/${id}`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/posts/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

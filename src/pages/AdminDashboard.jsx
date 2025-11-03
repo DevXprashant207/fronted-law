@@ -29,12 +29,12 @@ function AdminDashboard() {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('adminToken');
     if (!token) navigate('/admin/login');
 
     const fetchCounts = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('adminToken');
 
         const [newsRes, lawyersRes, postsRes, servicesRes, enquiriesRes, settingsRes] = await Promise.all([
           fetch('https://law-firm-backend-e082.onrender.com/api/news/').then(res => res.json()),
@@ -70,7 +70,7 @@ function AdminDashboard() {
       const newSettings = { ...settings, [field]: value };
       setSettings(newSettings);
 
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('adminToken');
       await fetch('https://law-firm-backend-e082.onrender.com/api/settings', {
         method: 'PUT',
         headers: {

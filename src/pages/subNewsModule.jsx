@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
 const API_BASE = 'https://law-firm-backend-e082.onrender.com';
 
-// ---------- Service Form ----------
-function ServiceForm({ onSubmit, initialData, onCancel }) {
-  const [form, setForm] = useState(initialData || {
-    name: '',
+function NewsForm({ onSubmit, initialData, onCancel }) {
+  const [form, setForm] = useState({
+    title: '',
+    link: '',
     description: '',
-    slug: '',
     image: null,
     imagePreview: ''
   });
-
-  const [error, setError] = useState('');
 
   useEffect(() => {
     if (initialData) {
@@ -39,52 +36,43 @@ function ServiceForm({ onSubmit, initialData, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!form.name || !form.slug || !form.description) {
-      setError('All fields are required.');
+    if (!form.title || !form.description) {
+      alert('Title and Description are required.');
       return;
     }
-
-    setError('');
-
     const formData = new FormData();
-    formData.append('name', form.name);
-    formData.append('slug', form.slug);
+    formData.append('title', form.title);
+    formData.append('link', form.link || '');
     formData.append('description', form.description);
-
     if (form.image instanceof File) formData.append('image', form.image);
-
     onSubmit(formData);
   };
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
-      {error && <div className="text-red-600 text-sm">{error}</div>}
-
       <input
-        name="name"
-        value={form.name}
+        name="title"
+        value={form.title}
         onChange={handleChange}
-        placeholder="Service Name"
+        placeholder="Title"
+        className="w-full border p-2 rounded"
+        required
+      />
+      <input
+        name="link"
+        value={form.link}
+        onChange={handleChange}
+        placeholder="Link"
         className="w-full border p-2 rounded"
       />
-
-      <input
-        name="slug"
-        value={form.slug}
-        onChange={handleChange}
-        placeholder="Slug"
-        className="w-full border p-2 rounded"
-      />
-
       <textarea
         name="description"
         value={form.description}
         onChange={handleChange}
         placeholder="Description"
         className="w-full border p-2 rounded h-32 resize-none overflow-y-auto"
+        required
       />
-
       <div>
         <ImageUploader onUpload={handleImageUpload} />
         {form.imagePreview && (
@@ -97,7 +85,6 @@ function ServiceForm({ onSubmit, initialData, onCancel }) {
           </div>
         )}
       </div>
-
       <div className="flex gap-2 justify-center">
         <button type="submit" className="bg-[#cfac33] text-white px-5 py-2 rounded font-medium hover:bg-[#b8932b] transition">
           {initialData ? 'Update' : 'Create'}
@@ -116,94 +103,86 @@ function ServiceForm({ onSubmit, initialData, onCancel }) {
   );
 }
 
-// ---------- Services Module ----------
-function ServicesModule() {
-  const [services, setServices] = useState([]);
+function NewsModule() {
+  const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const token = localStorage.getItem('adminToken');
+  const token = localStorage.getItem("subAdminToken");
 
-  const fetchServices = async () => {
+  const fetchNews = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/services`);
-      const data = await res.json();
-      if (data.success && Array.isArray(data.data)) setServices(data.data);
-      else setServices([]);
+      const res = await fetch(`${API_BASE}/api/news/`);
+      const result = await res.json();
+      if (result.success && Array.isArray(result.data)) setNewsList(result.data);
+      else setNewsList([]);
     } catch (err) {
       console.error(err);
-      setServices([]);
+      setNewsList([]);
     }
     setLoading(false);
   };
 
-  useEffect(() => { fetchServices(); }, []);
+  useEffect(() => { fetchNews(); }, []);
 
   const handleCreate = async (formData) => {
     try {
-      const res = await fetch(`${API_BASE}/api/admin/services`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/news/`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
       const data = await res.json();
-      if (data.success) {
-        setShowModal(false);
-        fetchServices();
-      } else alert(data.message || 'Failed to create service');
+      if (!data.error) { setShowModal(false); fetchNews(); }
+      else alert(data.error);
     } catch (err) {
-      console.error('Create service error:', err);
+      console.error('Create news error:', err);
     }
   };
 
   const handleUpdate = async (formData) => {
     if (!editing || !editing.id) return;
     try {
-      const res = await fetch(`${API_BASE}/api/admin/services/${editing.id}`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/news/${editing.id}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
       const data = await res.json();
-      if (data.success) {
-        setEditing(null);
-        setShowModal(false);
-        fetchServices();
-      } else alert(data.message || 'Failed to update service');
+      if (!data.error) { setEditing(null); setShowModal(false); fetchNews(); }
+      else alert(data.error);
     } catch (err) {
-      console.error('Update service error:', err);
+      console.error('Update news error:', err);
     }
   };
 
   const handleDelete = async (id) => {
     if (!id) return;
-    if (!window.confirm('Are you sure you want to delete this service?')) return;
+    if (!window.confirm('Are you sure you want to delete this news?')) return;
     try {
-      const res = await fetch(`${API_BASE}/api/admin/services/${id}`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/news/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
-      if (data.success) fetchServices();
-      else alert(data.message || 'Failed to delete service');
+      if (!data.error) fetchNews();
+      else alert(data.error);
     } catch (err) {
-      console.error('Delete service error:', err);
+      console.error('Delete news error:', err);
     }
   };
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-[#23293a] border-b-2 border-[#cfac33] pb-2">
-          Services Management
-        </h2>
+        <h2 className="text-xl font-bold text-[#23293a] border-b-2 border-[#cfac33] pb-2">News</h2>
         <button
           className="bg-[#cfac33] text-white px-4 py-2 rounded"
           onClick={() => { setShowModal(true); setEditing(null); }}
         >
-          Add Service
+          Add News
         </button>
       </div>
 
@@ -212,9 +191,9 @@ function ServicesModule() {
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
             <h3 className="text-lg font-semibold text-[#23293a] mb-4 text-center">
-              {editing ? 'Edit Service' : 'Add New Service'}
+              {editing ? 'Edit News' : 'Add New News'}
             </h3>
-            <ServiceForm
+            <NewsForm
               onSubmit={editing ? handleUpdate : handleCreate}
               initialData={editing}
               onCancel={() => { setShowModal(false); setEditing(null); }}
@@ -223,7 +202,6 @@ function ServicesModule() {
         </div>
       )}
 
-      {/* Loading Spinner */}
       {loading ? (
         <div className="min-h-[200px] flex items-center justify-center">
           <div className="text-center">
@@ -236,41 +214,35 @@ function ServicesModule() {
           <table className="w-full border border-gray-200">
             <thead>
               <tr className="bg-[#23293a] text-white">
-                <th className="p-3 font-semibold text-left">Service Name</th>
-                <th className="p-3 font-semibold text-left">Slug</th>
+                <th className="p-3 font-semibold text-left">Title</th>
+                <th className="p-3 font-semibold text-left">Link</th>
                 <th className="p-3 font-semibold text-left">Description</th>
                 <th className="p-3 font-semibold text-left">Image</th>
                 <th className="p-3 font-semibold text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {[...services].reverse().map((item, index) => (
-                <tr
-                  key={item.id}
-                  className={`${index % 2 === 0 ? 'bg-white' : 'bg-[#f3f1eb]'} hover:bg-[#ede9dd] transition`}
-                >
-                  <td className="p-3 border-t text-left">{item.name}</td>
-                  <td className="p-3 border-t text-left">{item.slug}</td>
-                  <td className="p-3 border-t text-left">
-                    <div
-                      className="text-sm text-gray-700 px-2 overflow-hidden"
-                      style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        lineHeight: '1.5',
-                      }}
-                    >
+              {[...newsList].reverse().map((item, index) => (
+                <tr key={item.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-[#f3f1eb]'} hover:bg-[#ede9dd] transition`}>
+                  <td className="p-3 border text-left">{item.title}</td>
+                  <td className="p-3 border text-left">
+                    {item.link ? (
+                      <a href={item.link} target="_blank" rel="noreferrer" className="text-blue-600 underline">
+                        {item.link}
+                      </a>
+                    ) : 'N/A'}
+                  </td>
+                  <td className="p-3 border text-left">
+                    <div className="text-sm text-gray-700 max-h-[3em] overflow-y-auto px-1" style={{ lineHeight: '1.5' }}>
                       {item.description}
                     </div>
-
                   </td>
-                  <td className="p-3 border-t text-center">
-                    {item.imageUrl
-                      ? <img src={`${API_BASE}${item.imageUrl}`} alt="" className="w-12 h-12 object-cover rounded-full mx-auto" />
-                      : 'N/A'}
+                  <td className="p-3 border text-center">
+                    {item.imageUrl ? (
+                      <img src={`${API_BASE}${item.imageUrl}`} alt="" className="w-12 h-12 object-cover rounded-full mx-auto" />
+                    ) : 'N/A'}
                   </td>
-                  <td className="p-3 border-t flex justify-center items-center gap-2">
+                  <td className="p-3 border flex justify-center items-center gap-2">
                     <button
                       className="bg-blue-500 text-white px-3 py-1 rounded flex items-center gap-1 hover:bg-blue-600 transition"
                       onClick={() => { setEditing(item); setShowModal(true); }}
@@ -286,10 +258,10 @@ function ServicesModule() {
                   </td>
                 </tr>
               ))}
-              {services.length === 0 && (
+              {newsList.length === 0 && (
                 <tr>
                   <td colSpan="5" className="text-center p-4 text-[#cfac33]">
-                    No services found.
+                    No news found.
                   </td>
                 </tr>
               )}
@@ -301,4 +273,4 @@ function ServicesModule() {
   );
 }
 
-export default ServicesModule;
+export default NewsModule;

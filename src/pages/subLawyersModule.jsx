@@ -141,7 +141,7 @@ function LawyersModule() {
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  const token = localStorage.getItem('adminToken');
+  const token = localStorage.getItem("subAdminToken");
 
   const fetchLawyers = async () => {
     setLoading(true);
@@ -162,7 +162,7 @@ function LawyersModule() {
 
   const handleCreate = async (formData) => {
     try {
-      const res = await fetch(`${API_BASE}/api/admin/lawyers`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/lawyers`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -177,7 +177,7 @@ function LawyersModule() {
 
   const handleUpdate = async (formData) => {
     try {
-      const res = await fetch(`${API_BASE}/api/admin/lawyers/${editing.id}`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/lawyers/${editing.id}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -194,7 +194,7 @@ function LawyersModule() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this lawyer?')) return;
     try {
-      await fetch(`${API_BASE}/api/admin/lawyers/${id}`, {
+      await fetch(`${API_BASE}/api/subadmin/lawyers/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

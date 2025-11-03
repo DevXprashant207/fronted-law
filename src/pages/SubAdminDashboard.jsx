@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LawyersModule from "./LawyersModule";
-import EnquiriesModule from "./EnquiriesModule";
+import LawyersModule from "./subLawyersModule";
+import EnquiriesModule from "./subEnquiriesModule";
 import MediaModule from "./MediaModule";
-import NewsModule from "./NewsModule";
-import PostsModule from "./PostsModule";
-import ServicesModule from "./ServicesModule";
+import NewsModule from "./subNewsModule";
+import PostsModule from "./subPostsModule";
+import ServicesModule from "./subServicesModule";
 
 function SubAdminDashboard() {
   const navigate = useNavigate();
@@ -96,7 +96,9 @@ function SubAdminDashboard() {
   }, [navigate]);
 
   if (!permissions)
-    return <p className="text-center mt-10 text-gray-600">Loading dashboard...</p>;
+    return <div className="min-h-[200px] flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#cfac33] mx-auto mb-2"></div>
+        </div>
 
   return (
     <div className="min-h-screen bg-[#f8f6f2] font-serif flex">
@@ -119,7 +121,7 @@ function SubAdminDashboard() {
               />
             </svg>
           </span>
-          <span className="font-bold text-lg">Sub-Admin Panel</span>
+          <span className="font-bold text-lg">Gupta Law Offices</span>
         </div>
 
         <nav className="flex flex-col gap-4">

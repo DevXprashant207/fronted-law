@@ -123,7 +123,7 @@ function ServicesModule() {
   const [editing, setEditing] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const token = localStorage.getItem('adminToken');
+  const token = localStorage.getItem("subAdminToken");
 
   const fetchServices = async () => {
     setLoading(true);
@@ -143,7 +143,7 @@ function ServicesModule() {
 
   const handleCreate = async (formData) => {
     try {
-      const res = await fetch(`${API_BASE}/api/admin/services`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/services`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -161,7 +161,7 @@ function ServicesModule() {
   const handleUpdate = async (formData) => {
     if (!editing || !editing.id) return;
     try {
-      const res = await fetch(`${API_BASE}/api/admin/services/${editing.id}`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/services/${editing.id}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -181,7 +181,7 @@ function ServicesModule() {
     if (!id) return;
     if (!window.confirm('Are you sure you want to delete this service?')) return;
     try {
-      const res = await fetch(`${API_BASE}/api/admin/services/${id}`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/services/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

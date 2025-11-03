@@ -109,7 +109,7 @@ function NewsModule() {
   const [editing, setEditing] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('adminToken');
 
   const fetchNews = async () => {
     setLoading(true);

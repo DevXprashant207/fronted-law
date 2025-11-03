@@ -139,12 +139,12 @@ function EnquiriesModule() {
   const [editing, setEditing] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  const token = localStorage.getItem('adminToken');
+  const token = localStorage.getItem('subAdminToken');
 
   const fetchEnquiries = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/admin/enquiries`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/enquiries`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -161,7 +161,7 @@ function EnquiriesModule() {
 
   const handleCreate = async (enquiry) => {
     try {
-      await fetch(`${API_BASE}/api/admin/enquiries`, {
+      await fetch(`${API_BASE}/api/subadmin/enquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(enquiry)
@@ -175,7 +175,7 @@ function EnquiriesModule() {
 
   const handleUpdate = async (enquiry) => {
     try {
-      await fetch(`${API_BASE}/api/admin/enquiries/${editing.id}`, {
+      await fetch(`${API_BASE}/api/subadmin/enquiries/${editing.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(enquiry)
@@ -191,7 +191,7 @@ function EnquiriesModule() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this enquiry?')) return;
     try {
-      await fetch(`${API_BASE}/api/admin/enquiries/${id}`, {
+      await fetch(`${API_BASE}/api/subadmin/enquiries/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -204,7 +204,7 @@ function EnquiriesModule() {
   const handleStatusUpdate = async (id, statusLabel) => {
     try {
       const status = STATUS_MAP[statusLabel];
-      const res = await fetch(`${API_BASE}/api/admin/enquiries/${id}/status`, {
+      const res = await fetch(`${API_BASE}/api/subadmin/enquiries/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ status })
