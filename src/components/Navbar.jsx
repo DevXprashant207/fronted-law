@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import logo from "../assets/HeaderLogo.png"
+import logo from "../assets/logo.jpg"
 
 function Navbar() {
   const [open, setOpen] = useState(false)
@@ -71,7 +71,8 @@ function Navbar() {
       />
 
       <div className="flex items-center gap-2">
-        <img src={logo || "/placeholder.svg"} alt="Logo" className="h-12 w-32" />
+        <img src={logo || "/placeholder.svg"} alt="Logo" className="h-16 rounded-xl" />
+        <span className="font-bold text-xl tracking-wide text-black">Gupta Law Offices</span>
       </div>
 
       <div className="hidden md:flex gap-8 text-[#000000] font-medium">

@@ -2,8 +2,8 @@ function Header() {
   return (
     <header className="flex items-center justify-between px-6 py-3 border-b border-[#e5e2dc] bg-[#f8f6f2]">
       <div className="flex items-center gap-2">
-  <img src="https://i.imgur.com/1Q9Z1ZB.png" alt="Gupta Law Firm Logo" className="h-10 w-10" />
-  <span className="font-bold text-lg tracking-wide text-[#7c6a4c]">Gupta Law Firm</span>
+        <img src="https://i.imgur.com/1Q9Z1ZB.png" alt="Gupta Law Firm Logo" className="h-10 w-10" />
+        <span className="font-bold text-lg tracking-wide text-[#7c6a4c]">Gupta Law Firm</span>
       </div>
       <nav className="flex gap-8 text-[#7c6a4c] font-medium">
         <a href="#" className="border-b-2 border-[#bfa77a] pb-1">HOME</a>
