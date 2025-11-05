@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import LawyerCard from '../components/LawyerCard';
 
-const API_BASE = 'https://law-firm-backend-e082.onrender.com';
+const API_BASE = 'https://api.guptalawoffices.in';
 function Lawyers() {
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);

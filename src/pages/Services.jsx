@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ServiceCard from '../components/ServiceCard';
 
-const API_BASE = 'https://law-firm-backend-e082.onrender.com';
+const API_BASE = 'https://api.guptalawoffices.in';
 
 function Services() {
   const [services, setServices] = useState([]);

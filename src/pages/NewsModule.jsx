@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
-const API_BASE = 'https://law-firm-backend-e082.onrender.com';
+const API_BASE = 'https://api.guptalawoffices.in';
 
 function NewsForm({ onSubmit, initialData, onCancel }) {
   const [form, setForm] = useState({

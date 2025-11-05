@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-const API_BASE = 'https://law-firm-backend-e082.onrender.com/api/posts';
+const API_BASE = 'https://api.guptalawoffices.in/api/posts';
 
 function BlogDetail() {
   const { slug } = useParams();
@@ -30,7 +30,7 @@ function BlogDetail() {
   const getImageUrl = (url) => {
     if (!url) return '/default-image.png'; // fallback image
     if (url.startsWith('http')) return url;
-    return `https://law-firm-backend-e082.onrender.com${url}`;
+    return `https://api.guptalawoffices.in${url}`;
   };
 
   return (

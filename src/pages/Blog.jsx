@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BlogCard from '../components/BlogCard';
 
-const API_BASE = 'https://law-firm-backend-e082.onrender.com/api/posts';
+const API_BASE = 'https://api.guptalawoffices.in/api/posts';
 
 function Blog() {
   const [posts, setPosts] = useState([]);

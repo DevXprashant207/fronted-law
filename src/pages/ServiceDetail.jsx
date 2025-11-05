@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import LawyerCard from '../components/LawyerCard';
 import testImage from '../assets/HeroSection/slider-item-1.jpg';
 
-const API_BASE = 'https://law-firm-backend-e082.onrender.com';
+const API_BASE = 'https://api.guptalawoffices.in';
 
 function ServiceDetails() {
   const { id } = useParams();

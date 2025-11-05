@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await fetch("https://law-firm-backend-e082.onrender.com/api/settings");
+        const res = await fetch("https://api.guptalawoffices.in/api/settings");
         if (!res.ok) throw new Error("Failed to fetch settings");
         const data = await res.json();
 

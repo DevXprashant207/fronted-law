@@ -28,8 +28,8 @@ function AdminLogin() {
     try {
       const endpoint =
         loginType === "admin"
-          ? "https://law-firm-backend-e082.onrender.com/api/admin/auth/login"
-          : "https://law-firm-backend-e082.onrender.com/api/subadmin/login";
+          ? "https://api.guptalawoffices.in/api/admin/auth/login"
+          : "https://api.guptalawoffices.in/api/subadmin/login";
 
       const res = await fetch(endpoint, {
         method: "POST",

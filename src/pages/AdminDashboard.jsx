@@ -37,14 +37,14 @@ function AdminDashboard() {
         const token = localStorage.getItem('adminToken');
 
         const [newsRes, lawyersRes, postsRes, servicesRes, enquiriesRes, settingsRes] = await Promise.all([
-          fetch('https://law-firm-backend-e082.onrender.com/api/news/').then(res => res.json()),
-          fetch('https://law-firm-backend-e082.onrender.com/api/lawyers').then(res => res.json()),
-          fetch('https://law-firm-backend-e082.onrender.com/api/posts/').then(res => res.json()),
-          fetch('https://law-firm-backend-e082.onrender.com/api/services/').then(res => res.json()),
-          fetch('https://law-firm-backend-e082.onrender.com/api/admin/enquiries?limit=1000', {
+          fetch('https://api.guptalawoffices.in/api/news/').then(res => res.json()),
+          fetch('https://api.guptalawoffices.in/api/lawyers').then(res => res.json()),
+          fetch('https://api.guptalawoffices.in/api/posts/').then(res => res.json()),
+          fetch('https://api.guptalawoffices.in/api/services/').then(res => res.json()),
+          fetch('https://api.guptalawoffices.in/api/admin/enquiries?limit=1000', {
             headers: { 'Authorization': `Bearer ${token}` }
           }).then(res => res.json()),
-          fetch('https://law-firm-backend-e082.onrender.com/api/settings').then(res => res.json())
+          fetch('https://api.guptalawoffices.in/api/settings').then(res => res.json())
         ]);
 
         setCounts({
@@ -71,7 +71,7 @@ function AdminDashboard() {
       setSettings(newSettings);
 
       const token = localStorage.getItem('adminToken');
-      await fetch('https://law-firm-backend-e082.onrender.com/api/settings', {
+      await fetch('https://api.guptalawoffices.in/api/settings', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

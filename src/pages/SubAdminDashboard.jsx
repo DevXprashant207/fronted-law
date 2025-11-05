@@ -27,7 +27,7 @@ function SubAdminDashboard() {
     const fetchPermissionsAndCounts = async () => {
       try {
         // Fetch permissions
-        const res = await fetch("https://law-firm-backend-e082.onrender.com/api/subadmin/me", {
+        const res = await fetch("https://api.guptalawoffices.in/api/subadmin/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -48,28 +48,28 @@ function SubAdminDashboard() {
           enquiriesRes,
         ] = await Promise.all([
           data.canManageNews
-            ? fetch("https://law-firm-backend-e082.onrender.com/api/news/").then((r) =>
+            ? fetch("https://api.guptalawoffices.in/api/news/").then((r) =>
                 r.json()
               )
             : Promise.resolve({ data: [] }),
           data.canManageLawyers
-            ? fetch("https://law-firm-backend-e082.onrender.com/api/lawyers").then((r) =>
+            ? fetch("https://api.guptalawoffices.in/api/lawyers").then((r) =>
                 r.json()
               )
             : Promise.resolve({ data: [] }),
           data.canManagePosts
-            ? fetch("https://law-firm-backend-e082.onrender.com/api/posts/").then((r) =>
+            ? fetch("https://api.guptalawoffices.in/api/posts/").then((r) =>
                 r.json()
               )
             : Promise.resolve({ data: [] }),
           data.canManageServices
-            ? fetch("https://law-firm-backend-e082.onrender.com/api/services/").then((r) =>
+            ? fetch("https://api.guptalawoffices.in/api/services/").then((r) =>
                 r.json()
               )
             : Promise.resolve({ data: [] }),
           data.canManageEnquiries
             ? fetch(
-                "https://law-firm-backend-e082.onrender.com/api/admin/enquiries?limit=1000",
+                "https://api.guptalawoffices.in/api/admin/enquiries?limit=1000",
                 {
                   headers: { Authorization: `Bearer ${token}` },
                 }

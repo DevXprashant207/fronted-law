@@ -1,7 +1,7 @@
 import React from 'react';
 import fallbackImg from "../assets/blog-deafult.jpeg";
 
-const API_BASE_URL = 'https://law-firm-backend-e082.onrender.com';
+const API_BASE_URL = 'https://api.guptalawoffices.in';
 
 function BlogCard({ post, onReadMore }) {
   const { title, content, createdAt, slug, imageUrl } = post;

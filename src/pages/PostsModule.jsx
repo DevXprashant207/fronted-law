@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ImageUploader from '../components/ImageUploader';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 
-const API_BASE = 'https://law-firm-backend-e082.onrender.com';
+const API_BASE = 'https://api.guptalawoffices.in';
 
 // ---------- Post Form ----------
 function PostForm({ onSubmit, initialData, onCancel }) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FiUserPlus, FiTrash2, FiEdit } from "react-icons/fi";
 
-const API_BASE = "https://law-firm-backend-e082.onrender.com";
+const API_BASE = "https://api.guptalawoffices.in";
 
 function SubAdminForm({ onSubmit, onCancel, existingData }) {
   const [form, setForm] = useState(

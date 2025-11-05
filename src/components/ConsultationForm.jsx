@@ -53,7 +53,7 @@ function ConsultationForm() {
       };
 
       try {
-        await fetch('https://law-firm-backend-e082.onrender.com/api/enquiry/', {
+        await fetch('https://api.guptalawoffices.in/api/enquiry/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
