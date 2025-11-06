@@ -35,17 +35,17 @@ function DisclaimerModal({ onAgree }) {
           <div className="overflow-y-auto flex-1 mb-6 p-2 text-gray-700 text-sm space-y-3 leading-relaxed">
             <p>
               The rules of the Bar Council of India impose restrictions on maintaining a web page and do not permit lawyers
-              to provide information concerning their areas of practice. Luthra and Luthra Law Offices India is, therefore,
+              to provide information concerning their areas of practice. Gupta Law Offices  is, therefore,
               constrained from providing any further information on this web page. The rules of the Bar Council of India prohibit law firms
               from soliciting work or advertising in any manner.
             </p>
 
             <ul className="list-disc pl-5 space-y-2">
-              <li>The user wishes to gain more information about Luthra and Luthra Law Offices India for personal use only.</li>
+              <li>The user wishes to gain more information about Gupta Law Offices  for personal use only.</li>
               <li>Any information obtained or material downloaded from this website is completely at the user’s discretion.</li>
               <li>No lawyer-client relationship is created by visiting this site.</li>
               <li>Information provided here is not legal advice.</li>
-              <li>Luthra and Luthra Law Offices India is not liable for actions taken based on this website.</li>
+              <li>Gupta Law Offices  is not liable for actions taken based on this website.</li>
               <li>For legal issues, independent legal advice must be sought.</li>
             </ul>
 
