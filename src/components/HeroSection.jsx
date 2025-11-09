@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import slider1 from '../assets/HeroSection/slider-item-1.jpg';
-import slider2 from '../assets/HeroSection/slider-item-2.jpg';
+import slider2 from '../assets/HeroSection/s3.avif';
 import slider3 from '../assets/HeroSection/slider-item-3.jpg';
 
 function HeroSection() {
@@ -59,7 +59,7 @@ function HeroSection() {
               Naman Gupta
             </span>
             <span className="block text-xs tracking-widest text-[#000000]">
-              CEO, GUPTA LAW OFFICES
+              FOUNDER, GUPTA LAW OFFICES
             </span>
           </div>
         </div>

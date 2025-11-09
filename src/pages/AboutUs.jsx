@@ -122,11 +122,11 @@ function About() {
           <div className="flex flex-col md:flex-row justify-center gap-12 text-gray-800">
             <div>
               <h4 className="font-semibold text-lg mb-1">📍 Office Address</h4>
-              <p>123 Legal Avenue, Delhi NCR, India</p>
+              <p>T 93/I, Ksirki, Oppposite Saket District Court Gate No. 2, Malviya Nagar-110017</p>
             </div>
             <div>
               <h4 className="font-semibold text-lg mb-1">📞 Phone</h4>
-              <p>+91 98765 43210</p>
+              <p>+91 9312242917</p>
             </div>
             <div>
               <h4 className="font-semibold text-lg mb-1">✉️ Email</h4>

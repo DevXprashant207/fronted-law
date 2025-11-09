@@ -10,10 +10,10 @@ function Footer() {
         <div>
           <h3 className="text-white text-lg mb-3 font-semibold">Contact Info</h3>
           <ul className="space-y-2 text-white">
-            <li className="flex items-center gap-2"><span>📞</span> (1)2345-2345-54</li>
+            <li className="flex items-center gap-2"><span>📞</span> +91  9312242917</li>
             <li className="flex items-center gap-2"><span>✉️</span> contact@guptalawoffices.co</li>
             <li className="flex items-center gap-2"><span>⏰</span> Mon — Fri 9.00-18.00</li>
-            <li className="flex items-center gap-2"><span>📍</span> Gate-Number-Two, T-93/I, opposite Saket-District-Court, Khirki Extension, Malviya Nagar, New Delhi, Delhi 110017</li>
+            <li className="flex items-center gap-2"><span>📍</span> T 93/I, Ksirki, Oppposite Saket District Court Gate No. 2, Malviya Nagar-110017</li>
           </ul>
         </div>
         <div>
