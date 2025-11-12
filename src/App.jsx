@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import DisclaimerModal from "./components/DisclaimerModal";
 import "./App.css";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // ✅ Lazy-loaded pages
 const HeroSection = lazy(() => import("./components/HeroSection"));
@@ -138,6 +139,7 @@ export default function App() {
 
             {/* 🔐 Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route
               path="/admin/news"
               element={
