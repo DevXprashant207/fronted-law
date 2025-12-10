@@ -2,48 +2,42 @@ import React, { useState } from 'react';
 
 const testimonials = [
   {
-  name: 'Naman Gupta',
-    location: 'Gate-Number-Two, T-93/I, opposite Saket-District-Court, Khirki Extension, Malviya Nagar, New Delhi, Delhi 110017',
-    text: 'The tours in this website are great. I had been really enjoy with my family! The team is very professional and taking care of the customers. Will surely recommend to my friend to join this company!',
+    name: 'Arjun Mehta',
+    location: 'New Delhi, India',
+    text: 'Our firm has proudly served the National High Speed Rail Corporation Ltd., delivering precise legal solutions with professionalism and commitment.',
     stars: 5,
-    image: 'https://randomuser.me/api/portraits/women/44.jpg',
+    image: 'https://randomuser.me/api/portraits/men/15.jpg',
   },
   {
-    name: 'Christopher Thompson',
-    location: 'Washington',
-    text: 'The legal team exceeded my expectations. They were professional, responsive, and truly cared about my case. Highly recommended!',
+    name: 'Sneha Kapoor',
+    location: 'New Delhi, India',
+    text: 'Provided dedicated legal assistance to the High Court of Delhi (MIG) Legal Aid Society, ensuring timely and effective representation.',
     stars: 5,
-    image: 'https://randomuser.me/api/portraits/men/32.jpg',
+    image: 'https://randomuser.me/api/portraits/women/21.jpg',
   },
   {
-    name: 'Elizabeth Brown',
-    location: 'Los Angeles',
-    text: 'I felt supported throughout the process. The lawyers explained everything clearly and made me feel confident in my decisions.',
+    name: 'Rahul Sharma',
+    location: 'Lucknow, India',
+    text: 'Our team has successfully served Allahabad Bank with professional legal support and compliance-focused solutions.',
     stars: 4.5,
-    image: 'https://randomuser.me/api/portraits/women/65.jpg',
+    image: 'https://randomuser.me/api/portraits/men/31.jpg',
   },
   {
-    name: 'Michael Lee',
-    location: 'New York',
-    text: 'Excellent service and attention to detail. The team handled my case with expertise and compassion.',
+    name: 'Aditi Verma',
+    location: 'Delhi, India',
+    text: 'Worked with the Delhi State Legal Service Authority, contributing to access-to-justice initiatives with dedication.',
     stars: 5,
-    image: 'https://randomuser.me/api/portraits/men/54.jpg',
+    image: 'https://randomuser.me/api/portraits/women/56.jpg',
   },
   {
-    name: 'Priya Sharma',
-    location: 'Chicago',
-    text: 'Very professional and knowledgeable lawyers. I am grateful for their help and would recommend them to anyone.',
+    name: 'Karan Singh',
+    location: 'Gurugram, India',
+    text: 'Served Strands Salon Pvt. Ltd. by offering legal advisory services tailored to business needs and operations.',
     stars: 4.5,
-    image: 'https://randomuser.me/api/portraits/women/68.jpg',
-  },
-  {
-    name: 'David Kim',
-    location: 'Houston',
-    text: 'Quick response and great results. The team made a stressful situation much easier to handle.',
-    stars: 5,
-    image: 'https://randomuser.me/api/portraits/men/23.jpg',
+    image: 'https://randomuser.me/api/portraits/men/62.jpg',
   },
 ];
+
 
 function StarRating({ stars }) {
   const fullStars = Math.floor(stars);

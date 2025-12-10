@@ -7,7 +7,7 @@ function HomeAboutUs() {
             <h3 className="uppercase text-[#23293a] font-bold tracking-widest text-lg mb-2">About Gupta Law Offices</h3>
             <div className="w-12 h-1 bg-[#B88A2F] mb-6" />
             <p className="text-[#000000] text-lg leading-relaxed mb-8">
-              Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river.
+              Our law firm is dedicated to providing reliable and effective legal services backed by over 13 years of professional experience. With a team of skilled associates and a strong foundation of practical knowledge, we offer comprehensive legal solutions tailored to the needs of individuals, businesses, and organizations. We focus on professionalism, transparency, and delivering results that protect our clients’ best interests.
             </p>
             <div className="mt-8 mb-2">
               <span className="block text-3xl font-signature text-[#000000] mb-2" style={{ fontFamily: 'Dancing Script, cursive' }}>Naman Gupta</span>
