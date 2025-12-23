@@ -40,8 +40,7 @@ function HeroSection() {
         <div className="relative z-10 w-full max-w-[500px] text-left flex flex-col items-start justify-center h-full bg-transparent rounded-lg p-">
           <h1 className="text-5xl md:text-5xl font-serif text-[#000000] mb-6 font-bold">Gupta Law Offices</h1>
           <p className="text-lg md:text-lg text-[#1a1a19] mb-6">
-            We are a leading law firm in financial &amp; business industry.<br />
-            With more than 20 years of experience.
+            Backed by 13+ years of experience, our law firm offers smart, practical, and effective legal services for clients across different sectors.
           </p>
           <button
             onClick={() =>
